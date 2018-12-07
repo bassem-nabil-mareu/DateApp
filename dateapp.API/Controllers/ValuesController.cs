@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace dateapp.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]")] 
     [ApiController]
     public class ValuesController : ControllerBase
     {
