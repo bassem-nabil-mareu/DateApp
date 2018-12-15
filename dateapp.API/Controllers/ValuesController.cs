@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using dateapp.API.Data;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace dateapp.API.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")] 
     [ApiController]
     public class ValuesController : ControllerBase
@@ -19,6 +21,7 @@ namespace dateapp.API.Controllers
 
         }
         // GET api/values
+        [AllowAnonymous]
         [HttpGet]
         public async Task<IActionResult> GetValues()
         {
@@ -26,7 +29,7 @@ namespace dateapp.API.Controllers
             return Ok(list);
         }
 
-        // GET api/values/5
+        [AllowAnonymous]
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id)
         {
