@@ -15,6 +15,11 @@ using dateapp.API.Data;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using System.Net;
+using Microsoft.AspNetCore.Diagnostics;
+using Microsoft.AspNetCore.Http;
+using dateapp.API.Helper;
+using AutoMapper;
 
 namespace dateapp.API
 {
@@ -31,9 +36,18 @@ namespace dateapp.API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<DataContext>(opts => opts.UseSqlServer(Configuration["ConnectionString:DateappDB"]));
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
+            //Newtonsoft.Json.JsonSerializationException: Self referencing loop detected for property 
+            .AddJsonOptions(opt=>{
+                opt.SerializerSettings.ReferenceLoopHandling=
+                Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+            })
+            ;
             services.AddCors();
+            services.AddAutoMapper();
+            services.AddTransient<Seed>();;
             services.AddScoped<IAuthRepository, AuthRepository>();
+            services.AddScoped<IDatingRepository, DatingRepository>();
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(options=>{
                 options.TokenValidationParameters = new TokenValidationParameters
@@ -48,7 +62,7 @@ namespace dateapp.API
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, Seed seeder)
         {
             if (env.IsDevelopment())
             {
@@ -57,9 +71,23 @@ namespace dateapp.API
             else
             {
                // app.UseHsts();
+               // error handler
+               // error handler
+               app.UseExceptionHandler(bulider=>{
+                   bulider.Run(async context=>{
+                       context.Response.StatusCode=(int)HttpStatusCode.InternalServerError;
+
+                       var error = context.Features.Get<IExceptionHandlerFeature>();
+                       if(error!=null){
+                           context.Response.AddApplicationError(error.Error.Message);
+                           await context.Response.WriteAsync(error.Error.Message);
+                       }
+                   });
+               });
             }
 
            // app.UseHttpsRedirection();
+           //seeder.seedUsers();
             app.UseCors(s => s.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
             app.UseAuthentication();
             app.UseMvc();

@@ -47,6 +47,7 @@ namespace dateapp.API.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login (LoginModel model)
         {
+           // throw new Exception("bassem say no");   
             var user = await _authRepository.Login(model.userName.ToLower(),model.password);
 
             if(user==null)
