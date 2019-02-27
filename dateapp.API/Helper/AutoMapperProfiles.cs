@@ -30,6 +30,7 @@ namespace dateapp.API.Helper
                     opt.ResolveUsing(d=>d.DateOfBirth.CalcAge());
                 });
             CreateMap<Photo, PhotoModel>();
+            //CreateMap<UserEditModel, User>();
         }
     }
 }

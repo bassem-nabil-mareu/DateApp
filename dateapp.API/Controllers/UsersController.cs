@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
 using dateapp.API.Data;
@@ -41,6 +43,30 @@ namespace dateapp.API.Controllers
             var model = _mapper.Map<UserDetailsModel>(user);
 
             return Ok(model);
+        }
+        
+        // update user
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateUser(int id,UserEditModel model) 
+        {
+            // check if the passsing id == the user that logged in
+            // check if user is the current user that pass token to server 
+            if(id != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
+                return Unauthorized();
+
+            var obj = await _datingService.GetUserById(id);
+            obj.Introduction = model.Introduction;
+            obj.LookingFor = model.LookingFor;
+            obj.Interests = model.Interests;
+            obj.City = model.City;
+            obj.Country = model.Country;
+
+            //await _mapper.Map(model,obj);
+
+            if(await _datingService.SaveAll())
+                return NoContent();
+
+            throw new Exception($"updated error for {id}");    
         }
     }
 }
