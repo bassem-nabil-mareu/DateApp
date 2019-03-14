@@ -20,6 +20,8 @@ using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;
 using dateapp.API.Helper;
 using AutoMapper;
+using System.IO;
+using Microsoft.Extensions.FileProviders;
 
 namespace dateapp.API
 {
@@ -88,6 +90,25 @@ namespace dateapp.API
 
            // app.UseHttpsRedirection();
            //seeder.seedUsers();
+
+           // start VIP this for call images by custome route  
+           // start VIP this for call images by custome route  
+            app.UseStaticFiles();
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                FileProvider = new PhysicalFileProvider(
+                    Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images")),
+                RequestPath = "/MyImages"
+            });
+            app.UseDirectoryBrowser(new DirectoryBrowserOptions
+            {
+                FileProvider = new PhysicalFileProvider(
+                    Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images")),
+                RequestPath = "/MyImages"
+            });
+           // end VIP this for call images by custome route
+           // end VIP this for call images by custome route
+
             app.UseCors(s => s.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
             app.UseAuthentication();
             app.UseMvc();

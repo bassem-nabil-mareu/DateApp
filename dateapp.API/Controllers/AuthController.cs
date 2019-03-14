@@ -1,5 +1,6 @@
 using System;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
@@ -75,8 +76,14 @@ namespace dateapp.API.Controllers
 
             var token = tokenHandler.CreateToken(tokenDescriptor);
 
+            var userModel = new UserListModel();
+            userModel.Id = user.Id;
+            userModel.UserName = user.UserName;
+            userModel.PhotoURL = user.Photos.Where(s=>s.IsMain==true).Select(o=>o.Url).FirstOrDefault();
+
             return Ok(new {
-                token = tokenHandler.WriteToken(token)
+                token = tokenHandler.WriteToken(token),
+                user = userModel
             });
         }
     }

@@ -15,7 +15,7 @@ namespace dateapp.API.Data
         }
         public async Task<User> Login(string userName, string password)
         {
-            var user = await _context.Users.FirstOrDefaultAsync(s=>s.UserName==userName);
+            var user = await _context.Users.Include(j=>j.Photos).FirstOrDefaultAsync(s=>s.UserName==userName);
             
             if(user==null)
                 return null;
@@ -23,7 +23,7 @@ namespace dateapp.API.Data
             if(!VerifyPasswordHash(password,user.PasswordHash,user.PasswordSalt))
                 return null;
 
-                return user;
+            return user;
         }
 
         private bool VerifyPasswordHash(string password, byte[] passwordHash, byte[] passwordSalt)

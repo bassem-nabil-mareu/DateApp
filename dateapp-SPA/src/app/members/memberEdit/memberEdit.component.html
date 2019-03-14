@@ -12,7 +12,7 @@
     <div class="row">
       <div class="col-sm-4">
         <div class="card">
-          <img class="card-img-tio img-thumbnail" src={{User.photoURL}}>
+          <img class="card-img-tio img-thumbnail" src={{photoUrl}}>
           <div class="card-body">
             <div>
               <strong>Location:</strong>
@@ -68,6 +68,9 @@
               </div>
             </form>
            </tab> 
+           <tab heading="Edit Images">
+            <app-photoEditor [photos]="User.photos" (changeMianPhoto)="setNewMainPhoto($event)"></app-photoEditor>
+           </tab>
          </tabset>
        </div>
       </div>

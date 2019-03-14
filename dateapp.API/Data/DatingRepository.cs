@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using dateapp.API.Models;
+using System.Linq;
 using Microsoft.EntityFrameworkCore;
 
 namespace dateapp.API.Data
@@ -21,6 +22,16 @@ namespace dateapp.API.Data
         public void Delete<T>(T entity) where T : class
         {
             _context.Remove(entity);
+        }
+
+        public async Task<Photo> GetMainPhotoByUserId(int userId)
+        {
+            return await _context.Photos.Where(c=>c.UserId==userId).FirstOrDefaultAsync(c=>c.IsMain==true);
+        }
+
+        public async Task<Photo> GetPhotoById(int photoId)
+        {
+            return await _context.Photos.FirstOrDefaultAsync(s=>s.Id==photoId);
         }
 
         public async Task<User> GetUserById(int id)

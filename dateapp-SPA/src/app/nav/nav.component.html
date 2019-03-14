@@ -9,6 +9,11 @@
     <div class="my-1 my-md-0 mr-md-3">
         
 <div *ngIf="loggedIn()" class="dropdown" dropdown>
+    <span class="mr-1">
+      <img src={{photoUrl}} alt=""
+          style="max-height: 50px; border: 1px solid white;display: inline"
+      />
+    </span>
     <a class="dropdown-toggle text-dark" dropdownToggle >
       Welcome {{ _authService.decodedToken.unique_name }}
     </a>
