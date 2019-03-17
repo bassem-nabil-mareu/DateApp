@@ -2,7 +2,7 @@
   <div class="row">
     <div class="col-sm-4">
       <div class="card">
-        <img class="card-img-tio img-thumbnail" src={{User.photoURL}}>
+        <img class="card-img-tio img-thumbnail" src="{{User.photoURL|| '../../../../../assets/user.png'}}">
         <div class="card-body">
           <div>
             <strong>Location:</strong>
@@ -20,35 +20,41 @@
             <strong>member since:</strong>
             <p>{{User.createdOn}}</p>
           </div>
-        </div> 
+        </div>
         <div class="card-footer">
-            <button class="btn btn-primary">Like</button>
-            <button class="btn btn-success">Message</button>
-          </div>
+          <button class="btn btn-primary mr-2">Like</button>
+          <button class="btn btn-success">Message</button>
+        </div>
       </div>
     </div>
     <div class="col-sm-8">
       <div class="card">
-       <div class="tab-pancel">
-         <tabset>
-           <tab heading="About {{User?.knownAs}}">
-             <h4>Description</h4>
-             <p>{{User.introduction}}</p>
-             <h4>Looking For</h4>
-             <p>{{User.lookingFor}}</p>
-           </tab> 
-           <tab heading="Interests">
+        <div class="tab-pancel p-2">
+          <tabset>
+            <tab heading="About {{User?.knownAs}}" class="p-2">
+
+              <div class="p-2">
+                <h4>Description</h4>
+                <p>{{User.introduction}}</p>
+              </div>
+
+              <div class="p-2">
+                <h4>Looking For</h4>
+                <p>{{User.lookingFor}}</p>
+              </div>
+            </tab>
+            <tab heading="Interests" class="p-2">
               <h4>Interests</h4>
               <p>{{User.interests}}</p>
-            </tab> 
-            <tab heading="Photos">
+            </tab>
+            <tab heading="Photos" class="p-2">
               <ngx-gallery [options]="galleryOptions" [images]="galleryImages"></ngx-gallery>
-             </tab>
-             <tab heading="Messages">
-                <h4>Messages here</h4>
-              </tab>
-         </tabset>
-       </div>
+            </tab>
+            <tab heading="Messages" class="p-2">
+              <h4>Messages here</h4>
+            </tab>
+          </tabset>
+        </div>
       </div>
     </div>
   </div>

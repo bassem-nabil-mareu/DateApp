@@ -1,27 +1,62 @@
-<form #registerForm="ngForm" (ngSubmit)="register()">
+<form [formGroup]="registerForm" (ngSubmit)="register()">
     <h2 class="text-center text-primary">Sign Up</h2>
     <hr>
   
     <div class="form-group">
-      <input type="text" [(ngModel)]="model.userName" required name="userName" class="form-control" placeholder="Username">
+      <label class="control-label" style="margin-right:10px">I am a: </label>
+      <label class="radio-inline">
+        <input class="mr-3" type="radio" value="male" formControlName="gender">Male
+      </label>
+      <label class="radio-inline ml-3">
+        <input class="mr-3" type="radio" value="female" formControlName="gender">Female
+      </label>
+    </div>
+
+    <div class="form-group">
+      <input type="text" [ngClass]="{'is-invalid': registerForm.get('username').errors&&registerForm.get('username').touched}" formControlName="username" class="form-control" placeholder="Username">
+      <div class="invalid-feedback">user name is empty</div>
     </div>
     
+    
     <div class="form-group">
+      <input type="text" bsDatepicker [ngClass]="{'is-invalid': registerForm.get('dateOfBirth').errors&&registerForm.get('dateOfBirth').touched}" formControlName="dateOfBirth" class="form-control" placeholder="date Of Birth">
+      <div class="invalid-feedback">Date Of Birth is empty</div>
+    </div>
+
+    <div class="form-group">
+      <input type="text" [ngClass]="{'is-invalid': registerForm.get('knownAs').errors&&registerForm.get('knownAs').touched}" formControlName="knownAs" class="form-control" placeholder="known As">
+      <div class="invalid-feedback">knownAs is empty</div>
+    </div>
+    <!-- <div class="form-group">
       <label>what is you fav value?</label>
       <select class="form-control" id="favvalue">
         <option *ngFor="let item of valuesFromHome" [value]="value">
           {{item.name}}
         </option>
       </select>
-    </div>
+    </div> -->
 
     <div class="form-group">
-      <input type="password" [(ngModel)]="model.Password" required name="Password" class="form-control" placeholder="Password">
+      <input type="password" 
+      [ngClass]="{'is-invalid': registerForm.get('password').errors&&registerForm.get('password').touched}" formControlName="password" class="form-control" placeholder="Password">
+      <div class="invalid-feedback" *ngIf="registerForm.get('password').hasError('required')&&registerForm.get('password').touched">password is empty</div>
+      <div class="invalid-feedback" *ngIf="registerForm.get('password').hasError('minlength')&&registerForm.get('password').touched">password min char is 4</div>
     </div>
   
+    <div class="form-group">
+      <input type="password" 
+      [ngClass]="{'is-invalid': registerForm.get('confirmPassword').errors&&registerForm.get('confirmPassword').touched
+      ||registerForm.get('confirmPassword').touched&&registerForm.hasError('notmatch')}" formControlName="confirmPassword" class="form-control" placeholder="confirm Password">
+      <div class="invalid-feedback" *ngIf="registerForm.get('confirmPassword').hasError('required')&&registerForm.get('confirmPassword').touched">confirm Password is empty</div>
+      <div class="invalid-feedback" *ngIf="registerForm.hasError('notmatch')&&registerForm.get('confirmPassword').touched">confirm Password not match password</div>
+    </div>
+
     <div class="form-group text-center">
       <button [disabled]="!registerForm.valid" class="btn btn-success mr-3" type="submit">Register</button>
       <button class="btn btn-default" type="button" (click)="cancel()">Cancel</button>
     </div>
     
   </form>
+
+  <p>{{registerForm.value|json}}</p>
+  <p>{{registerForm.status}}</p>

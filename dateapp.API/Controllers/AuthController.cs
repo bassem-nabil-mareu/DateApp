@@ -28,20 +28,32 @@ namespace dateapp.API.Controllers
         [HttpPost("registerme")]
         public async Task<IActionResult> Register(UserModel model)
         {
-            model.username = model.username.ToLower();
+            model.UserName = model.UserName.ToLower();
 
-            if(await _authRepository.UserExists(model.username))
+            if(await _authRepository.UserExists(model.UserName))
             {
                 return BadRequest("userName Found");
             }
 
             var user = new User{
-                UserName = model.username
+                UserName = model.UserName,
+                Gender = model.Gender,
+                KnownAs = model.KnownAs,
+                DateOfBirth = model.DateOfBirth,
+                LastActive = DateTime.Now,
+                Created = DateTime.Now,
             };
 
-            var createUser = await _authRepository.Register(user,model.password);
+            var createUser = await _authRepository.Register(user,model.Password);
             
-            return StatusCode(201);
+            var returnUser = new UserModel {
+                UserName = model.UserName,
+                Gender = model.Gender,
+                KnownAs = model.KnownAs,
+                DateOfBirth = model.DateOfBirth,
+            };
+
+            return CreatedAtRoute("GetUser", new { controller = "Users", id = createUser.Id }, returnUser);
         }
 
 

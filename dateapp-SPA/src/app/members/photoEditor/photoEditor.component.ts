@@ -55,7 +55,13 @@ export class PhotoEditorComponent implements OnInit {
           isMain: res.isMain,
         };
         this.photos.push(photo);
-        this._authService.changePhotoUrl(res.url);
+
+        if (photo.isMain) {
+          this._authService.changePhotoUrl(photo.url);
+          this._authService.currentUser.photoURL = photo.url;
+          // override the current user in storage
+          localStorage.setItem('user', JSON.stringify(this._authService.currentUser));
+        }
       }
     };
   }
@@ -70,6 +76,7 @@ export class PhotoEditorComponent implements OnInit {
 
         this._authService.changePhotoUrl(photo.url);
         this._authService.currentUser.photoURL = photo.url;
+        // override the current user in storage
         localStorage.setItem('user', JSON.stringify(this._authService.currentUser));
 
         this._alertify.success('this photo is main now');
@@ -77,7 +84,7 @@ export class PhotoEditorComponent implements OnInit {
       this._alertify.error(er);
     });
   }
-  
+
   deletePhoto(photoId: number) {
     this._alertify.confirm('Are u sure?', () => {
         this._userService.deletePhoto(photoId, this._authService.decodedToken.nameid)

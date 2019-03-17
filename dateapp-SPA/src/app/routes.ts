@@ -22,7 +22,7 @@ export const appRoutes: Routes = [
         children: [
             { path: 'member', component: MemberListComponent, resolve: {users: MemberListResolver}},
             { path: 'member/:id', component: MemberDetailComponent, resolve: {user: MemberDetailResolver}},
-            { path: 'memberEdit', component: MemberEditComponent, 
+            { path: 'memberEdit', component: MemberEditComponent,
             resolve: {user: MemberEditResolver}, canDeactivate: [PrevenetUnsavedChanges]},
             { path: 'messages', component: MessagesComponent},
             { path: 'lists', component: ListsComponent},
