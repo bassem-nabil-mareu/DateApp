@@ -47,7 +47,7 @@ namespace dateapp.API
             ;
             services.AddCors();
             services.AddAutoMapper();
-            services.AddTransient<Seed>();;
+            services.AddTransient<Seed>();
             services.AddScoped<IAuthRepository, AuthRepository>();
             services.AddScoped<IDatingRepository, DatingRepository>();
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -61,6 +61,7 @@ namespace dateapp.API
                     ValidateAudience = false,
                 };
             });
+            services.AddScoped<LogUserActivty>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

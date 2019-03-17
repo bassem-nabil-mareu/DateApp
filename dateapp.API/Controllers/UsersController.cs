@@ -4,12 +4,14 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
 using dateapp.API.Data;
+using dateapp.API.Helper;
 using dateapp.API.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace dateapp.API.Controllers
 {
+    [ServiceFilter(typeof(LogUserActivty))]
     [Authorize]
     [Route("api/[controller]")]
     [ApiController]

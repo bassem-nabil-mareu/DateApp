@@ -1,7 +1,7 @@
 <div class="container mt-4 mb-4">
   <div class="row">
     <div class="col-sm-4">
-      <h1>Your profile</h1>
+      
     </div>
     <div class="col-sm-8">
       <div *ngIf="EditForm.dirty" class="alert alert-info">
@@ -24,11 +24,11 @@
           </div>
           <div>
             <strong>Last Active:</strong>
-            <p>{{User.lastActive}}</p>
+            <p>{{User.lastActive | timeAgo}}</p>
           </div>
           <div>
             <strong>member since:</strong>
-            <p>{{User.createdOn}}</p>
+            <p>{{User.created | date}}</p>
           </div>
         </div>
         <div class="card-footer">
